@@ -1,10 +1,11 @@
 package projetal2020
 
 object Main extends App {
-  println("Ici le programme principal")
-  // Le code suivant ne compilera pas.
-  // var tmp = null;
-  // var tmp2 = if (tmp == 1) "yes" else 1
+    println("Ici le programme principal")
 
-  // println(s"tmp: $tmp, tmp2: $tmp2")
+    val grid = new Grid(2, 2)
+    grid.debug()
+
+    grid.grid(1)(1) = Option[Lawnmower](new Lawnmower("test"))
+    grid.debug()
 }
