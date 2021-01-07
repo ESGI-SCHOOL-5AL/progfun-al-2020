@@ -36,7 +36,7 @@ class Lawnmower(
           gridHeight,
           orientation,
           positionX,
-          Utils.clamp(positionY - 1, 0, gridHeight - 1)
+          Utils.clamp(positionY + 1, 0, gridHeight - 1)
         )
       case Orientation.East =>
         new Lawnmower(
@@ -52,7 +52,7 @@ class Lawnmower(
           gridHeight,
           orientation,
           positionX,
-          Utils.clamp(positionY + 1, 0, gridHeight - 1)
+          Utils.clamp(positionY - 1, 0, gridHeight - 1)
         )
       case Orientation.West =>
         new Lawnmower(
@@ -64,5 +64,8 @@ class Lawnmower(
         )
     }
   }
+
+  override def toString(): String =
+    "[O: " + orientation.toString + ", X: " + positionX.toString + ", Y: " + positionY.toString + "]"
 
 }

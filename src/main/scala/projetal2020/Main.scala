@@ -1,11 +1,26 @@
 package projetal2020
 
 object Main extends App {
-    println("Ici le programme principal")
+  if (args.length == 0) {
+    println("File path required")
+    sys.exit(1)
+  }
 
-    val grid = new Grid(2, 2)
-    grid.debug()
+  val fileContents = ConfigurationParser.configurationFileToString(args(0))
+  val split = ConfigurationParser.splitByBlock(fileContents)
+  val config = ConfigurationParser.parse(split)
 
-    grid.grid(1)(1) = Option[Lawnmower](new Lawnmower("test"))
-    grid.debug()
+  val grid = new Grid(config.sizeGrid(0), config.sizeGrid(0), config.lawnmowers)
+  grid.print()
+
+  val lawnmowers = config.lawnmowers.zipWithIndex.map {
+    case (lawnmower, index) => {
+      config.instructions(index).foldLeft[Lawnmower](lawnmower) { (a, m) =>
+        a.move(m)
+      }
+    }
+  }.toList
+
+  val gridResult = new Grid(config.sizeGrid(0), config.sizeGrid(0), lawnmowers)
+  gridResult.print()
 }

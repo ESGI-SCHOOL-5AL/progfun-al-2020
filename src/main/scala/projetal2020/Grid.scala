@@ -1,6 +1,6 @@
 package projetal2020
 
-class Grid(val width: Int, val height: Int, val lawnmowers: Array[Lawnmower]) {
+class Grid(val width: Int, val height: Int, val lawnmowers: List[Lawnmower]) {
 
   def print() = {
     printHeader()
@@ -38,7 +38,7 @@ class Grid(val width: Int, val height: Int, val lawnmowers: Array[Lawnmower]) {
 
   def printRows() = {
     val rows = Array.tabulate(this.height) { i =>
-      buildRow(i)
+      buildRow(height - 1 - i)
     }
     println(rows.mkString(buildRowSeparator() + "\n"))
   }
