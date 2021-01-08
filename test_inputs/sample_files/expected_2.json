@@ -1,0 +1,1 @@
+{"limite":{"x":5,"y":5},"tondeuses":[{"debut":{"point":{"x":1,"y":2},"direction":"N"},"instructions":["G","A","G","A","G","A","G","A","A"],"fin":{"point":{"x":1,"y":3},"direction":"N"}}]}
