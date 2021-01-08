@@ -1,5 +1,7 @@
 package projetal2020
 
+import play.api.libs.json._
+
 class Grid(val width: Int, val height: Int, val lawnmowers: List[Lawnmower]) {
 
   def print() = {
@@ -41,5 +43,63 @@ class Grid(val width: Int, val height: Int, val lawnmowers: List[Lawnmower]) {
       buildRow(height - 1 - i)
     }
     println(rows.mkString(buildRowSeparator() + "\n"))
+  }
+}
+
+object JSONGrid {
+  def toJSON(config: Configuration, lawnmowerList: List[Lawnmower]): JsValue = {
+    Json.toJson(
+      JsObject(
+        Seq[(String, JsValue)](
+          "limite" -> JsObject(
+            Seq[(String, JsNumber)](
+              "x" -> JsNumber(config.sizeGrid(0)),
+              "y" -> JsNumber(config.sizeGrid(1))
+            )
+          ),
+          "tondeuses" -> JsArray(config.lawnmowers.zipWithIndex.map {
+            case (lawnmower, index) => {
+              JsObject(
+                Seq[(String, JsValue)](
+                  "debut" -> JsObject(
+                    Seq[(String, JsValue)](
+                      "point" -> JsObject(
+                        Seq[(String, JsNumber)](
+                          "x" -> JsNumber(lawnmower.positionX),
+                          "y" -> JsNumber(lawnmower.positionY)
+                        )
+                      ),
+                      "direction" -> JsString(
+                        Orientation.toChar(lawnmower.orientation)
+                      )
+                    )
+                  ),
+                  "instructions" -> JsArray(
+                    config.instructions(index).map { m =>
+                      JsString(Move.toChar(m))
+                    }
+                  ),
+                  "fin" -> JsObject(
+                    Seq[(String, JsValue)](
+                      "point" -> JsObject(
+                        Seq[(String, JsNumber)](
+                          "x" -> JsNumber(lawnmowerList(index).positionX),
+                          "y" -> JsNumber(lawnmowerList(index).positionY)
+                        )
+                      ),
+                      "direction" -> JsString(
+                        Orientation.toChar(
+                          lawnmowerList(index).orientation
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            }
+          })
+        )
+      )
+    )
   }
 }

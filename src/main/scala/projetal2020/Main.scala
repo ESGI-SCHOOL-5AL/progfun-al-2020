@@ -1,5 +1,7 @@
 package projetal2020
 
+import play.api.libs.json._
+
 object Main extends App {
   if (args.length == 0) {
     println("File path required")
@@ -23,4 +25,6 @@ object Main extends App {
 
   val gridResult = new Grid(config.sizeGrid(0), config.sizeGrid(0), lawnmowers)
   gridResult.print()
+
+  println(Json.stringify(JSONGrid.toJSON(config, lawnmowers)))
 }
