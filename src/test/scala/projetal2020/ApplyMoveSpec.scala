@@ -17,6 +17,30 @@ class ApplyMoveSpec extends AnyFunSuite {
     testSample("3")
   }
 
+  test("Error test size") {
+    assertThrows[DonneesIncorectesException] {
+      ConfigurationParser.parseFile(
+        "test_inputs/sample_files/sample_error_1.txt"
+      )
+    }
+  }
+
+  test("Error test position") {
+    assertThrows[DonneesIncorectesException] {
+      ConfigurationParser.parseFile(
+        "test_inputs/sample_files/sample_error_2.txt"
+      )
+    }
+  }
+
+  test("Error test instructions") {
+    assertThrows[DonneesIncorectesException] {
+      ConfigurationParser.parseFile(
+        "test_inputs/sample_files/sample_error_3.txt"
+      )
+    }
+  }
+
   def testSample(id: String) = {
     val config = ConfigurationParser.parseFile(
       "test_inputs/sample_files/sample" + id + ".txt"
