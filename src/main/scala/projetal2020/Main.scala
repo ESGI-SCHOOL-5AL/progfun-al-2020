@@ -7,26 +7,22 @@ object Main extends App {
     println("File path required")
     sys.exit(1)
   } else {
-    val fileContents = ConfigurationParser.configurationFileToString(args(0))
-    val split = ConfigurationParser.splitByBlock(fileContents)
-    val config = ConfigurationParser.parse(split)
+    val config = ConfigurationParser.parseFile(args(0))
 
-    val grid =
-      new Grid(config.sizeGrid(0), config.sizeGrid(0), config.lawnmowers)
-    grid.print()
+    val lawnmowers =
+      Utils.applyInstructions(config.lawnmowers, config.instructions)
 
-    val lawnmowers = config.lawnmowers.zipWithIndex.map {
-      case (lawnmower, index) => {
-        config.instructions(index).foldLeft[Lawnmower](lawnmower) { (a, m) =>
-          a.move(m)
-        }
-      }
-    }.toList
-
-    val gridResult =
-      new Grid(config.sizeGrid(0), config.sizeGrid(0), lawnmowers)
-    gridResult.print()
-
-    println(Json.stringify(JSONGrid.toJSON(config, lawnmowers)))
+    if (args.length == 2 && args(1) == "pretty") {
+      val grid =
+        new Grid(config.sizeGrid(0), config.sizeGrid(0), config.lawnmowers)
+      println("Initial state:")
+      grid.print()
+      println("End state:")
+      val gridResult =
+        new Grid(config.sizeGrid(0), config.sizeGrid(0), lawnmowers)
+      gridResult.print()
+    } else {
+      println(Json.prettyPrint(JSONGrid.toJSON(config, lawnmowers)))
+    }
   }
 }

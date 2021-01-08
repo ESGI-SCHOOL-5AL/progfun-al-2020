@@ -15,6 +15,12 @@ class Configuration(
 @SuppressWarnings(Array("org.wartremover.warts.Throw"))
 object ConfigurationParser {
 
+  def parseFile(fileName: String): Configuration =
+    ConfigurationParser.parse(
+      ConfigurationParser
+        .splitByBlock(ConfigurationParser.configurationFileToString(fileName))
+    )
+
   def parse(file: List[String]): Configuration = {
     val size = parseSize(file(0))
     val defs = parseLawnmowers(file.drop(1))
